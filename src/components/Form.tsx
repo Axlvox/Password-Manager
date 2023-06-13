@@ -72,13 +72,13 @@ function Formulario() {
           </button>
           <button onClick={ handleCancelar }>Cancelar</button>
           <span>
-            {password && password.length < 8 ? (
+            {password.length < 8 ? (
               <div className="invalid-password-check">Possuir 8 ou mais caracteres</div>
             ) : (
               <div className="valid-password-check">Possuir 8 ou mais caracteres</div>
             )}
 
-            {password.length <= 16 ? (
+            {password.length >= 8 && password.length <= 16  ? (
               <div className="valid-password-check">Possuir até 16 caracteres</div>
             ) : (
               <div className="invalid-password-check">Possuir até 16 caracteres</div>
