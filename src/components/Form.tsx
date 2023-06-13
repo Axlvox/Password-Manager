@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 
 function Formulario() {
-  const [mostrarBotao, setMostrarBotao] = useState(true);
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [ShowButton, setShowButton] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   const handleCadastrarSenha = () => {
-    setMostrarBotao(false);
-    setMostrarFormulario(true);
+    setShowButton(false);
+    setShowForm(true);
   };
 
   const handleCancelar = () => {
-    setMostrarBotao(true);
-    setMostrarFormulario(false);
+    setShowButton(true);
+    setShowForm(false);
   };
 
   return (
     <div>
-      {mostrarBotao && (
+      {ShowButton && (
         <button onClick={ handleCadastrarSenha }>Cadastrar nova senha</button>
       )}
 
-      {mostrarFormulario ? (
+      {showForm ? (
         <form>
           <label>
             Nome do serviço:
