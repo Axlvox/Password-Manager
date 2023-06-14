@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 function Formulario() {
-  const [showButton, setShowButton] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [nameService, setNameService] = useState('');
   const [login, setLogin] = useState('');
@@ -20,14 +19,13 @@ function Formulario() {
   };
 
   const handleCadastrarSenha = () => {
-    setShowButton(true);
     setShowForm(false);
 
     const newSaved = {
       name: nameService,
-      login: login,
-      password: password,
-      url: url,
+      login,
+      password,
+      url,
     };
 
     setSaved([...saved, newSaved]);
@@ -35,7 +33,6 @@ function Formulario() {
   };
 
   const handleCancelar = () => {
-    setShowButton(true);
     setShowForm(false);
     clear();
   };
@@ -91,8 +88,10 @@ function Formulario() {
 
   return (
     <div>
-      {showButton && (
-        <button onClick={ () => setShowForm(true) }>Cadastrar nova senha</button>
+      {!showForm && (
+        <button onClick={ () => setShowForm(true) }>
+          Cadastrar nova senha
+        </button>
       )}
 
       {showForm && (
@@ -153,20 +152,30 @@ function Formulario() {
         </form>
       )}
 
-{saved.length > 0 ? (
-    saved.map((service, index) => (
-      <div key={index}>
-        <p>
-          Nome do serviço: <a href={service.url}>{service.name}</a>
-        </p>
-        <p>Login: {service.login}</p>
-        <p>Senha: {service.password}</p>
-      </div>
-    ))
-  ) : (
-    !showForm && <p>Nenhuma senha cadastrada</p>
-  )}
-</div>
+      {saved.length > 0 && (
+        <div>
+          {saved.map((service, index) => (
+            <div key={ index }>
+              <p>
+                Nome do serviço:
+                {' '}
+                <a href={ service.url }>{service.name}</a>
+              </p>
+              <p>
+                Login:
+                {service.login}
+              </p>
+              <p>
+                Senha:
+                {service.password}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!showForm && saved.length === 0 && <p>Nenhuma senha cadastrada</p>}
+    </div>
   );
 }
 
