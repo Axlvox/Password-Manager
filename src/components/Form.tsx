@@ -6,15 +6,38 @@ function Formulario() {
   const [nameService, setNameService] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const [url, setURL] = useState('');
   const [validPassword, setValidPassword] = useState(false);
+  const [saved, setSaved] = useState<{ name: string, login: string,
+    password: string, url: string }[]>([]);
+
+  const clear = () => {
+    setNameService('');
+    setLogin('');
+    setPassword('');
+    setURL('');
+    setValidPassword(false);
+  };
+
   const handleCadastrarSenha = () => {
-    setShowButton(false);
-    setShowForm(true);
+    setShowButton(true);
+    setShowForm(false);
+
+    const newSaved = {
+      name: nameService,
+      login: login,
+      password: password,
+      url: url,
+    };
+
+    setSaved([...saved, newSaved]);
+    clear();
   };
 
   const handleCancelar = () => {
     setShowButton(true);
     setShowForm(false);
+    clear();
   };
 
   const validatePassword = () => {
@@ -22,12 +45,54 @@ function Formulario() {
     setValidPassword(passwordRegex.test(password));
   };
 
+  const passwordMessage = () => (
+    <span>
+      {password.length < 8 ? (
+        <div className="invalid-password-check">
+          Possuir 8 ou mais caracteres
+        </div>
+      ) : (
+        <div className="valid-password-check">
+          Possuir 8 ou mais caracteres
+        </div>
+      )}
+
+      {password.length >= 8 && password.length <= 16 ? (
+        <div className="valid-password-check">
+          Possuir até 16 caracteres
+        </div>
+      ) : (
+        <div className="invalid-password-check">
+          Possuir até 16 caracteres
+        </div>
+      )}
+
+      {/[a-zA-Z]/.test(password) && /\d/.test(password) ? (
+        <div className="valid-password-check">
+          Possuir letras e números
+        </div>
+      ) : (
+        <div className="invalid-password-check">
+          Possuir letras e números
+        </div>
+      )}
+
+      {/[!@#$%^&*]/.test(password) ? (
+        <div className="valid-password-check">
+          Possuir algum caractere especial
+        </div>
+      ) : (
+        <div className="invalid-password-check">
+          Possuir algum caractere especial
+        </div>
+      )}
+    </span>
+  );
+
   return (
     <div>
       {showButton && (
-        <button onClick={ handleCadastrarSenha }>
-          Cadastrar nova senha
-        </button>
+        <button onClick={ () => setShowForm(true) }>Cadastrar nova senha</button>
       )}
 
       {showForm && (
@@ -64,60 +129,44 @@ function Formulario() {
           </label>
           <label>
             URL:
-            <input type="text" placeholder="URL" />
+            <input
+              type="text"
+              placeholder="URL"
+              value={ url }
+              onChange={ (e) => setURL(e.target.value) }
+            />
           </label>
           <button
-            disabled={ !nameService || !login || !validPassword
-                || password.length < 8 || password.length > 16 }
+            onClick={ handleCadastrarSenha }
+            disabled={
+              !nameService
+              || !login
+              || !validPassword
+              || password.length < 8
+              || password.length > 16
+            }
           >
             Cadastrar
           </button>
           <button onClick={ handleCancelar }>Cancelar</button>
-          <span>
-            {password.length < 8 ? (
-              <div className="invalid-password-check">
-                Possuir 8 ou mais caracteres
-              </div>
-            ) : (
-              <div className="valid-password-check">
-                Possuir 8 ou mais caracteres
-              </div>
-            )}
-
-            {password.length >= 8 && password.length <= 16 ? (
-              <div className="valid-password-check">
-                Possuir até 16 caracteres
-              </div>
-            ) : (
-              <div className="invalid-password-check">
-                Possuir até 16 caracteres
-              </div>
-            )}
-
-            {/[a-zA-Z]/.test(password) && /\d/.test(password) ? (
-              <div className="valid-password-check">
-                Possuir letras e números
-              </div>
-            ) : (
-              <div className="invalid-password-check">
-                Possuir letras e números
-              </div>
-            )}
-
-            {/[!@#$%^&*]/.test(password) ? (
-              <div className="valid-password-check">
-                Possuir algum caractere especial
-              </div>
-            ) : (
-              <div className="invalid-password-check">
-                Possuir algum caractere especial
-              </div>
-            )}
-          </span>
-
+          {passwordMessage()}
         </form>
       )}
-    </div>
+
+{saved.length > 0 ? (
+    saved.map((service, index) => (
+      <div key={index}>
+        <p>
+          Nome do serviço: <a href={service.url}>{service.name}</a>
+        </p>
+        <p>Login: {service.login}</p>
+        <p>Senha: {service.password}</p>
+      </div>
+    ))
+  ) : (
+    !showForm && <p>Nenhuma senha cadastrada</p>
+  )}
+</div>
   );
 }
 
