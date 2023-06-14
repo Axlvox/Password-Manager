@@ -18,7 +18,8 @@ function Formulario() {
     setValidPassword(false);
   };
 
-  const handleCadastrarSenha = () => {
+  const handleCadastrarSenha = (e: React.FormEvent) => {
+    e.preventDefault();
     setShowForm(false);
 
     const newSaved = {
@@ -95,7 +96,7 @@ function Formulario() {
       )}
 
       {showForm && (
-        <form>
+        <form onSubmit={ handleCadastrarSenha }>
           <label>
             Nome do serviço:
             <input
@@ -136,7 +137,7 @@ function Formulario() {
             />
           </label>
           <button
-            onClick={ handleCadastrarSenha }
+            type="submit"
             disabled={
               !nameService
               || !login
@@ -147,7 +148,9 @@ function Formulario() {
           >
             Cadastrar
           </button>
-          <button onClick={ handleCancelar }>Cancelar</button>
+          <button type="button" onClick={ handleCancelar }>
+            Cancelar
+          </button>
           {passwordMessage()}
         </form>
       )}
