@@ -87,13 +87,11 @@ function Formulario() {
     </span>
   );
 
-
   const handleRm = (index: number) => {
     const updatedSaved = [...saved];
     updatedSaved.splice(index, 1);
     setSaved(updatedSaved);
   };
-
 
   return (
     <div>
@@ -175,20 +173,20 @@ function Formulario() {
               <p>
                 Login:
                 <span>
-                {service.login}
+                  {service.login}
                 </span>
               </p>
               <p>
                 Senha:
                 <span>
-                {service.password}
+                  {service.password}
                 </span>
               </p>
-              
+
               <button
                 type="button"
                 data-testid="remove-btn"
-                onClick={() => handleRm(index)}
+                onClick={ () => handleRm(index) }
               >
                 Remover
               </button>
